@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Todo list</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script
+      src="http://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheets/index.css">
+
+    <script type="text/javascript" src="scripts/jquery/index.js"></script>
+    <script type="text/javascript" src="scripts/vendors/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/controllers/todayController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/tomorrowController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/upcomingController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/incompleteController.js"></script>
+    <script type="text/javascript" src="scripts/services/pullFactory.js"></script>
+  </head>
+  <body>
+    <nav>
+      <h1>Todo List</h1>
+    </nav>
+
+    <div class="list" ng-controller="todayList">
+      <!-- Modal -->
+      <div id="todayModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3>Enter your task for today</h3>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-8">
+                  <input class="form-control" type="text" name="" value="" placeholder="Your task" ng-model="inputTaskToday">
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-success" name="button" ng-click="addTaskToday()" data-dismiss="modal">Add task</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- Modal -->
+
+
+      <!-- edit Modal -->
+      <div id="editTodayModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3>Edit task</h3>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-8">
+                  <input class="form-control" type="text" name="" value="" placeholder="Your task" ng-model="editTaskText">
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-success" name="button" ng-click="editTask()" data-dismiss="modal">Edit task</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- edit Modal -->
+      <div class="top">
+        <h2>Today</h2><h3 data-toggle="modal" data-target="#todayModal"><i class="fa fa-plus" aria-hidden="true"></i></h3>
+      </div>
+      <ul>
+        <li ng-repeat="(key,record) in todayTasks | orderBy: '+completed'"><div class="row"><div class="col-xs-8" ng-class="record.completed==1 ? 'completed' :''">{{record.task}}</div><div class="col-xs-4 complete-area"><i class="fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#editTodayModal" ng-click="editGetTask(record.taskID,record.task)" ng-class="record.completed==1 ? 'hidden' : ''"></i><i class="fa fa-check-circle" aria-hidden="true" ng-class="record.completed==1 ? 'checked' : 'unchecked'" ng-click="updateTask(record.taskID)"></i></div></div></li>
+      </ul>
+      <a class="clear-completed" ng-class="{'clearhidden':hideClear}" href="#" ng-click="clearCompletedTasks()">Clear completed tasks</a>
+    </div>
+    <div class="clearfix"></div>
+    <div class="list" ng-controller="tomorrowList">
+      <!-- Tomorrow Modal -->
+      <div id="tomorrowModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3>Enter your task for tomorrow</h3>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-8">
+                  <input class="form-control" type="text" name="" value="" placeholder="Your task" ng-model="inputTaskTomorrow">
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-success" name="button" ng-click="addTaskTomorrow()" data-dismiss="modal">Add task</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Tomorrow Modal -->
+
+      <!-- edit tomorrow modal  -->
+      <div id="editTomorrowModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3>Edit task</h3>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-8">
+                  <input class="form-control" type="text" name="" value="" placeholder="Your task" ng-model="editTaskText">
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-success" name="button" ng-click="editTask()" data-dismiss="modal">Edit task</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- edit tomorrow modal  -->
+      <div class="top">
+        <h2>Tomorrow</h2><h3 data-toggle="modal" data-target="#tomorrowModal"><i class="fa fa-plus" aria-hidden="true"></i></h3>
+      </div>
+      <ul>
+        <li ng-repeat="(key,record) in tomorrowTasks"><div class="row"><div class="col-xs-8">{{record.task}}</div><div class="col-xs-4 bin-area"><i class="fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#editTomorrowModal" ng-click="editGetTask(record.taskID,record.task)" ng-class="record.completed==1 ? 'hidden' : ''"></i><i class="fa fa-trash" aria-hidden="true" ng-click="removeTask(record.taskID)"></i></div></div></li>
+      </ul>
+    </div>
+    <!-- upcoming  -->
+    <div class="clearfix"></div>
+    <div class="list" ng-controller="upcomingList">
+      <!-- upcoming Modal -->
+      <div id="upcomingModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3>Enter your task for an upcoming date</h3>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="input-group date">
+                    <input type="text" class="form-control" ng-model="inputDateUpcoming"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                  </div>
+                </div>
+              </div>
+              <div class="row text-row">
+                <div class="col-xs-8">
+                  <input class="form-control" type="text" name="" value="" placeholder="Your task" ng-model="inputTaskUpcoming">
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-success" name="button" ng-click="addTaskUpcoming()" data-dismiss="modal">Add task</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- upcoming Modal -->
+
+      <!-- edit upcoming modal  -->
+      <div id="editUpcomingModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3>Edit task</h3>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="input-group date">
+                  <input type="text" class="form-control" ng-model="editTaskDate"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+              </div>
+            </div>
+              <div class="row text-row">
+                <div class="col-xs-8">
+                  <input class="form-control" type="text" name="" value="" placeholder="Your task" ng-model="editTaskText">
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-success" name="button" ng-click="editTask()" data-dismiss="modal">Edit task</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- edit upcoming modal  -->
+      <div class="top">
+        <h2>Upcoming</h2><h3 data-toggle="modal" data-target="#upcomingModal"><i class="fa fa-plus" aria-hidden="true"></i></h3>
+      </div>
+      <ul>
+        <li ng-repeat="(key,record) in upcomingTasks | orderBy: '+taskDate'"><label>{{record.taskDate | date : 'dd-MM-yyyy'}}</label><div class="row"><div class="col-xs-8">{{record.task}}</div><div class="col-xs-4 bin-area"><i class="fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#editUpcomingModal" ng-click="editGetTask(record.taskID,record.task,record.taskDate)" ng-class="record.completed==1 ? 'hidden' : ''"></i><i class="fa fa-trash" aria-hidden="true" ng-click="removeTask(record.taskID)"></i></div></div></li>
+      </ul>
+    </div>
+
+
+    <div class="clearfix"></div>
+    <!-- incomplete tasks -->
+    <div class="list" ng-class="{'hidden':incompleteHidden}" ng-controller="incompleteList">
+      <!-- upcoming Modal -->
+      <div id="incompleteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3>Move incomplete task</h3>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="input-group date">
+                    <input type="text" class="form-control" ng-model="editTaskDate"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                  </div>
+                </div>
+              </div>
+              <div class="row text-row">
+                <div class="col-xs-8">
+                  <input class="form-control" type="text" name="" value="" placeholder="Your task" ng-model="editTaskText">
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-success" name="button" ng-click="editTask()" data-dismiss="modal">Move Task</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- upcoming Modal -->
+      <div class="top">
+        <h2 class="incomplete-title">Incomplete</h2>
+      </div>
+      <ul>
+        <li ng-repeat="(key,record) in incompleteTasks | orderBy : '+taskDate'"><label>{{record.taskDate | date : 'dd-MM-yyyy'}}</label><div class="row"><div class="col-xs-8">{{record.task}}</div><div class="col-xs-4 bin-area"><i class="fa fa-calendar" aria-hidden="true" data-toggle="modal" data-target="#incompleteModal" ng-click="editGetTask(record.taskID,record.task,record.taskDate)" ng-class="record.completed==1 ? 'hidden' : ''"></i><i class="fa fa-trash" aria-hidden="true" ng-click="removeTask(record.taskID)"></i></div></div></li>
+      </ul>
+    </div>
+
+  </body>
+</html>

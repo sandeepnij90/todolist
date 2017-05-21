@@ -1,0 +1,6 @@
+CREATE TABLE tblToDo (
+    taskID SERIAL AUTO_INCREMENT,
+    task text,
+    taskDate date,
+    completed int
+)

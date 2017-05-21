@@ -1,0 +1,112 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "vendors/datepicker";
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+*{
+  box-sizing: border-box;
+}
+.clearfix {
+  clear:both;
+  float: none;
+}
+nav {
+  background-color:#4b85a7;
+  color:#ffffff;
+  font-size:20px;
+  padding:15px;
+}
+
+.list {
+  margin-top:35px;
+  .top{
+    margin-bottom:20px;
+    h2{
+      float:left;
+      padding-left:15px;
+      text-transform:uppercase;
+      font-weight:600;
+      color:#4b85a7;
+      font-size:25px;
+    }
+    h2.incomplete-title {
+      color:#cccccc;
+    }
+    h3{
+      float:right;
+      padding-right:15px;
+      color:#4b85a7;
+      font-size:18px;
+      vertical-align: baseline;
+      cursor:pointer;
+      i {
+        font-weight:600;
+        font-size:25px;
+        vertical-align: top;
+        margin-right:10px;
+      }
+    }
+  }
+  ul {
+    margin-top:20px;
+    li{
+      border-bottom:1px solid #ccc;
+      padding: 15px;
+      clear: both;
+      margin-top:10px;
+
+      .completed {
+        color:#cccccc;
+        text-decoration: line-through;
+      }
+
+      label {
+        color:#cccccc;
+      }
+
+      i {
+        font-size:25px;
+        cursor:pointer;
+        margin-left:20px;
+      }
+      i.unchecked {
+        color: #cccccc;
+      }
+      i.checked{
+        color:#56a74b;
+      }
+      i.fa-trash,i.fa-pencil,i.fa-calendar {
+        color: #cccccc;
+      }
+      i.fa-calendar {
+        font-size:20px;
+      }
+    }
+  }
+  .complete-area,.bin-area {
+    text-align: right;
+  }
+  .clear-completed {
+    padding-right:15px;
+    padding-top:15px;
+    float:right;
+    color:#ccc;
+  }
+  .clear-completed.clearhidden {
+    display: none;
+  }
+}
+
+#upcomingModal,#editUpcomingModal,#incompleteModal {
+  button.btn-success {
+    width:100%;
+  }
+  .text-row{
+    margin-top:15px;
+  }
+}
